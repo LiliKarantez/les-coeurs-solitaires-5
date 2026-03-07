@@ -547,7 +547,7 @@ const PROFIL_QS = [
   { cat: "Avenir", q: "Comment te sens-tu par rapport à l'idée de vivre ensemble dans le futur ? Qu'est-ce qui te ferait te sentir vraiment épanoui·e dans une relation ? Et ton rêve le plus fou ?", type: "textarea", placeholder: "Prends le temps de te confier. As-tu autre chose à ajouter ? Une problématique particulière ? Quelque chose que je n'ai pas demandé ?", key: "avenir" },
 ];
 
-let profilCur = 0;
+let profilCur = -1;
 window._profilData = {};
 
 
@@ -598,11 +598,12 @@ function renderProfil() {
     document.getElementById('profil-cat').textContent = 'Identité';
     document.getElementById('profil-q').textContent = 'Pour commencer, parle-nous de toi';
     field.innerHTML = `
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
         <input type="text" class="profil-input" id="pa-prenom" placeholder="Prénom *">
         <input type="text" class="profil-input" id="pa-nom" placeholder="Nom *">
         <input type="text" class="profil-input" id="pa-pseudo" placeholder="Pseudo *">
       </div>
+      <input type="text" class="profil-input" id="pa-evenement" placeholder="À quel événement es-tu inscrit·e ? (ex : Dîner Vannes — 26 mars)" style="width:100%;">
     `;
     document.getElementById('profil-btn').textContent = 'Continuer →';
     return;
@@ -627,14 +628,16 @@ function nextProfil() {
     const prenom = document.getElementById('pa-prenom').value.trim();
     const nom = document.getElementById('pa-nom').value.trim();
     const pseudo = document.getElementById('pa-pseudo').value.trim();
-    if(!prenom || !nom || !pseudo) {
+    const evenement = document.getElementById('pa-evenement').value.trim();
+    if(!prenom || !nom || !pseudo || !evenement) {
       document.getElementById('profil-error').style.display = 'block';
-      document.getElementById('profil-error').textContent = 'Merci de remplir les trois champs.';
+      document.getElementById('profil-error').textContent = 'Merci de remplir tous les champs.';
       return;
     }
     window._profilData['prenom_profil'] = prenom;
     window._profilData['nom'] = nom;
     window._profilData['pseudo'] = pseudo;
+    window._profilData['evenement'] = evenement;
     profilCur = 0;
     renderProfil();
     return;
